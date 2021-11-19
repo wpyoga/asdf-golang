@@ -1,6 +1,6 @@
 # asdf-golang
 
-[![Build Status](https://travis-ci.org/kennyp/asdf-golang.svg?branch=master)](https://travis-ci.org/kennyp/asdf-golang)
+[![CI](https://github.com/kennyp/asdf-golang/actions/workflows/main.yml/badge.svg)](https://github.com/kennyp/asdf-golang/actions/workflows/main.yml)
 
 golang plugin for [asdf version manager](https://github.com/asdf-vm/asdf)
 
@@ -40,6 +40,8 @@ github.com/Dreamacro/clash
 github.com/jesseduffield/lazygit
 ```
 
+You can specify a non-default location of this file by setting a `ASDF_GOLANG_DEFAULT_PACKAGES_FILE` variable.
+
 ## Version selection
 
 When using `.tool-versions` or `.go-version`, the exact version specified in the
@@ -51,6 +53,30 @@ reference](https://golang.org/ref/mod#go-mod-file-go), that is the highest minor
 version with a matching major version. For example, a `go 1.14` directive in a
 `go.mod` file will result in the highest installed `1.minor.patch` being
 selected, not necessarily `1.14.patch`.
+
+## Architecture Override
+
+The `ASDF_GOLANG_OVERWRITE_ARCH` variable can be used to override the architecture 
+that is used for determining which Go build to download. The primary use case is when attempting 
+to install an older version of Go for use on an Apple M1 computer as Go was not being built for ARM at the time.
+#### Without ASDF_GOLANG_OVERWRITE_ARCH
+```
+> asdf install golang 1.15.8
+Platform 'darwin' supported!
+URL: https://dl.google.com/go/go1.15.8.darwin-arm64.tar.gz returned status 404
+```
+
+#### With ASDF_GOLANG_OVERWRITE_ARCH
+```
+> ASDF_GOLANG_OVERWRITE_ARCH=amd64 asdf install golang 1.15.8
+Platform 'darwin' supported!
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  116M  100  116M    0     0  98.6M      0  0:00:01  0:00:01 --:--:-- 98.6M
+verifying checksum
+/Users/<home>/.asdf/downloads/golang/1.15.8/archive.tar.gz: OK
+checksum verified
+```
 
 ## Contributing
 
